@@ -341,3 +341,249 @@ Understanding why architectural decisions are made is more valuable than simply 
 * What is the difference between a Repository, Package, and Module?
 * Why should LLM communication be isolated from business logic?
 * How does Layered Architecture improve maintainability?
+
+---
+
+# Session 5 – Configuration Management Foundation
+
+## Objective
+
+Understand why professional applications externalize configuration and build the first production-style configuration management system for the LinkedIn Tech Agent.
+
+The focus of this session was not simply creating a `settings.py` file, but understanding how configuration is managed in scalable software systems.
+
+---
+
+## Topics Covered
+
+* Environment Variables
+* `.env`
+* `.env.example`
+* `.gitignore`
+* Runtime Configuration
+* Configuration Management
+* Single Source of Truth (SSOT)
+* Mandatory vs Optional Configuration
+* Business Critical vs Operational Configuration
+* Generic Configuration Validation
+* Fail Fast Principle
+* Application Startup Lifecycle
+* Configuration Validation Strategy
+
+---
+
+## Concepts Learned
+
+### Why Configuration Exists
+
+Applications should not hardcode values that change between environments.
+
+Examples include:
+
+* API Keys
+* Database Connections
+* Model Names
+* Logging Levels
+
+Separating configuration from application code makes software more secure, portable and maintainable.
+
+---
+
+### Environment Variables
+
+Environment variables allow runtime configuration without modifying source code.
+
+Different environments (development, testing, staging and production) can use different configuration while running the same application.
+
+---
+
+### `.env`
+
+The `.env` file stores local development configuration.
+
+Typical examples include:
+
+* OpenAI API Key
+* OpenAI Model
+* Application Environment
+* Log Level
+
+The `.env` file must never be committed to version control because it may contain secrets.
+
+---
+
+### `.env.example`
+
+The `.env.example` file provides a template for other developers.
+
+It documents which environment variables are required without exposing sensitive values.
+
+This improves project onboarding and collaboration.
+
+---
+
+### Configuration Management
+
+Configuration should be centralized.
+
+Instead of accessing environment variables throughout the application, all configuration is loaded once inside `settings.py`.
+
+This establishes a Single Source of Truth (SSOT) for runtime configuration.
+
+---
+
+### Mandatory vs Optional Configuration
+
+Not every configuration value should be treated equally.
+
+Mandatory configuration prevents the application from functioning.
+
+Examples:
+
+* OPENAI_API_KEY
+* OPENAI_MODEL
+
+Optional configuration can safely provide default values.
+
+Examples:
+
+* APP_NAME
+* APP_ENV
+* LOG_LEVEL
+
+This distinction improves developer experience while maintaining application reliability.
+
+---
+
+### Business Critical vs Operational Configuration
+
+Business Critical Configuration directly affects the application's core functionality.
+
+Examples:
+
+* API Keys
+* Model Names
+
+Operational Configuration controls how the application behaves but does not determine whether it can perform its primary business function.
+
+Examples:
+
+* Logging Level
+* Application Name
+* Application Environment
+
+---
+
+### Generic Configuration Validation
+
+Instead of writing repetitive validation for each environment variable, configuration is stored in a dictionary and validated using a generic reusable function.
+
+This follows the DRY (Don't Repeat Yourself) principle and makes future configuration easier to maintain.
+
+---
+
+### Fail Fast Principle
+
+Applications should detect critical configuration problems during startup rather than failing later during execution.
+
+Fail Fast helps developers identify configuration issues immediately and reduces debugging effort.
+
+---
+
+### Application Startup Lifecycle
+
+The application startup process should follow a predictable sequence.
+
+```text
+Application Starts
+        │
+        ▼
+Load Configuration
+        │
+        ▼
+Validate Configuration
+        │
+        ▼
+Initialize Services
+        │
+        ▼
+Application Ready
+```
+
+Configuration loading belongs to `settings.py`.
+
+Application startup orchestration belongs to `main.py`.
+
+This separation keeps responsibilities clear and maintainable.
+
+---
+
+## Engineering Discussions
+
+Several architectural alternatives were discussed before implementation.
+
+Topics included:
+
+* Dictionary vs metadata-based configuration.
+* Generic validation vs repetitive `if` statements.
+* Why validation should report all missing settings instead of stopping at the first error.
+* Why `main.py` should control application startup.
+* Why Pydantic Settings will be introduced after the MVP rather than immediately.
+* Why abstractions should only be introduced when they solve a real engineering problem.
+
+---
+
+## Best Practices Learned
+
+* Never hardcode secrets.
+* Never commit `.env` files.
+* Commit `.env.example`.
+* Centralize runtime configuration.
+* Validate configuration before application startup.
+* Fail Fast when mandatory configuration is missing.
+* Use sensible defaults for optional configuration.
+* Build generic and reusable validation logic.
+* Keep application startup separate from configuration loading.
+* Build a working MVP before introducing advanced engineering frameworks.
+
+---
+
+## Connection to Data Engineering
+
+Configuration management follows many of the same principles used in Data Engineering.
+
+Examples include:
+
+* Spark jobs externalize configuration rather than hardcoding values.
+* Azure Data Factory pipelines use parameterization instead of fixed values.
+* Databricks jobs separate configuration from transformation logic.
+* Airflow DAGs commonly use environment variables for deployment-specific settings.
+* Data quality frameworks perform generic validation using reusable rules rather than repetitive validation code.
+
+The engineering mindset is the same even though the technologies are different.
+
+---
+
+## Reflection
+
+This session reinforced that professional software engineering is driven by design decisions rather than implementation details.
+
+Although relatively little code was written, the discussions focused on concepts that apply across AI Engineering, Data Engineering and general software development.
+
+I learned that configuration management is an architectural concern rather than simply reading values from a `.env` file.
+
+I also learned that engineering frameworks such as Pydantic Settings automate patterns that can first be understood through manual implementation.
+
+The decision to first build a working LinkedIn Tech Agent MVP before introducing production-grade engineering enhancements provides a structured learning path where every advanced concept is introduced only after understanding the engineering problem it solves.
+
+---
+
+## Questions for Future Revision
+
+* Why should applications externalize configuration?
+* What is the difference between mandatory and optional configuration?
+* What is the Fail Fast principle?
+* Why is generic validation preferable to repetitive validation?
+* Why should `main.py` control application startup?
+* What problem does Pydantic Settings solve compared to manual configuration management?
+* When should engineering abstractions be introduced into a project?
