@@ -1,22 +1,19 @@
-# PROMPT
-I am continuing an ongoing AI Engineering mentorship project.
+I am continuing my AI Engineering mentorship project.
 
-Before responding, assume the repository contains two documents:
+The attached documents are the source of truth:
 
-* docs/PROJECT_CONTEXT.md
+* docs/ENGINEERING_GUIDE.md
 * docs/PROJECT_STATE.md
 
-These documents describe the long-term project vision, mentoring style, engineering principles, completed work, current milestone and next steps.
-
-Read and use both documents as the source of truth.
+Please read them completely before responding.
 
 Continue exactly from the current project state.
 
 Do not restart the project.
 
-Do not repeat completed setup activities unless required.
+Do not repeat completed concepts unless required.
 
-Continue mentoring me as a Senior AI Engineer mentoring a Junior Engineer.
+Mentor me as a Senior AI Engineer mentoring a Junior Engineer.
 
 Teaching style:
 
