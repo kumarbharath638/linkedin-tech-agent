@@ -1,18 +1,14 @@
-# Current Sprint Objective
-
-Build the application startup lifecycle and integrate the OpenAI SDK to enable the first AI-generated LinkedIn post.
-
 # PROJECT_STATE
 
-## Current Status
+## Project Information
 
 **Project Name**
 
 LinkedIn Tech Agent
 
-**Repository**
+**Repository Status**
 
-GitHub repository created and actively maintained.
+GitHub repository initialized and actively maintained.
 
 **Current Branch**
 
@@ -20,317 +16,433 @@ main
 
 ---
 
+# Current Project Objective
+
+Build a production-quality AI application capable of generating high-quality technology-focused LinkedIn posts while learning professional AI Engineering principles.
+
+The current focus is building a strong software engineering foundation before integrating real LLM providers.
+
+---
+
 # Current Milestone
 
-## ✅ Milestone 1 Complete
-
-Professional Development Environment
+## ✅ Milestone 1 – Development Environment (Completed)
 
 Completed:
 
-* Python installed
-* Homebrew installed
-* Git configured
-* VS Code installed
-* Python Extension installed
-* Virtual Environment created
-* Git repository initialized
-* GitHub repository published
-* Initial documentation created
-* Initial Git commits completed
+* Python development environment
+* Homebrew installation
+* Git configuration
+* VS Code setup
+* Python virtual environment
+* GitHub repository
+* Initial project documentation
+* Initial Git workflow
 
 ---
 
-## ✅ Milestone 2 (Part 1) Complete
-
-Application Architecture Foundation
+## ✅ Milestone 2 – Project Architecture Foundation (Completed)
 
 Completed:
 
-* Designed the initial project architecture before writing AI functionality.
-* Understood the difference between Repository, Package and Module.
-* Understood why application code belongs inside the `app/` package.
-* Introduced Python package structure using `__init__.py`.
-* Designed the initial scalable folder structure following separation of concerns.
-* Introduced the concept of business responsibilities vs infrastructure responsibilities.
-* Introduced the concept of Layered Architecture.
-* Introduced the concept of Single Responsibility Principle (SRP).
-* Introduced the concept of Separation of Concerns.
-* Introduced the concept of Single Source of Truth (SSOT).
-* Created initial application architecture and committed to GitHub.
+* Designed scalable project architecture before implementation.
+* Understood Repository vs Package vs Module.
+* Introduced Python package structure.
+* Established layered application architecture.
+* Applied Separation of Concerns.
+* Applied Single Responsibility Principle (SRP).
+* Organized project into logical packages.
+* Introduced documentation-first development.
 
 ---
 
-## ✅ Milestone 2 (Part 2) Complete
-
-Configuration Management Foundation
+## ✅ Milestone 3 – Configuration Management (Completed)
 
 Completed:
 
-* Introduced environment-based configuration using `.env`.
-* Added `.env.example` as a developer onboarding template.
-* Updated `.gitignore` to exclude sensitive configuration.
-* Installed and configured `python-dotenv`.
-* Created `app/config/settings.py` as the application's Single Source of Truth (SSOT) for runtime configuration.
-* Implemented automatic loading of environment variables from the project root.
-* Classified configuration into mandatory and optional settings.
-* Added default values for:
+* Introduced `.env` configuration.
+* Added `.env.example`.
+* Configured `.gitignore`.
+* Integrated `python-dotenv`.
+* Created centralized `settings.py`.
+* Implemented Single Source of Truth (SSOT).
+* Classified mandatory and optional configuration.
+* Implemented reusable configuration validation.
+* Applied Fail Fast startup validation.
+* Improved developer-friendly validation messages.
 
-  * APP_NAME
-  * APP_ENV
-  * LOG_LEVEL
-* Implemented generic configuration validation using a reusable dictionary-based approach.
-* Implemented Fail Fast validation for mandatory configuration.
-* Improved startup validation messages with developer-friendly output.
-* Decided that application startup orchestration will be handled by `main.py`, while `settings.py` remains responsible for configuration loading and validation.
+---
 
+## ✅ Milestone 4 – Application Foundation (Completed)
+
+Completed:
+
+* Designed application startup lifecycle.
+* Created application entry point (`main.py`).
+* Separated startup responsibilities into dedicated functions.
+* Implemented dependency creation.
+* Introduced constructor-based Dependency Injection.
+* Built the application's first end-to-end execution flow.
+* Successfully generated the first simulated LinkedIn post using MockLLM.
+
+Application lifecycle:
+
+1. Startup
+2. Validate Configuration
+3. Create Dependencies
+4. Run Application
+5. Shutdown
+
+---
+
+## ✅ Milestone 5 – LLM Architecture Foundation (Completed)
+
+Completed:
+
+* Introduced `BaseLLM` using Abstract Base Classes (ABC).
+* Defined a provider-independent contract.
+* Created MockLLM implementation.
+* Connected LinkedInService with BaseLLM instead of a concrete provider.
+* Applied Composition over Inheritance.
+* Applied Program to Interfaces.
+* Designed the project for future provider replacement.
+
+Current provider:
+
+* MockLLM
+
+Future providers:
+
+* OllamaLLM
+* OpenAILLM
+* GeminiLLM
+
+---
 
 # Current Repository Structure
 
 ```text
-LinkedIn-Tech-Agent/
+linkedin-tech-agent/
 │
 ├── app/
-│   ├── __init__.py
-│   ├── main.py
-│   │
 │   ├── config/
-│   │   └── __init__.py
-│   │
-│   ├── services/
-│   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   └── settings.py
 │   │
 │   ├── llm/
-│   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── base_llm.py
+│   │   └── mock_llm.py
+│   │
+│   ├── services/
+│   │   ├── __init__.py
+│   │   └── linkedin_service.py
 │   │
 │   ├── prompts/
+│   │   └── __init__.py
+│   │
+│   ├── models/
 │   │   └── __init__.py
 │   │
 │   ├── utils/
 │   │   └── __init__.py
 │   │
-│   └── models/
-│       └── __init__.py
+│   ├── __init__.py
+│   └── main.py
 │
 ├── docs/
-├── prompts/
-├── data/
 ├── tests/
-│
+├── data/
 ├── README.md
 ├── LEARNING.md
-├── ROADMAP.md
+├── ENGINEERING_GUIDE.md
 └── .gitignore
 ```
 
-Empty folders currently contain `.gitkeep` where required for Git tracking.
+---
+
+# Current Application Flow
+
+```text
+User
+
+↓
+
+python -m app.main
+
+↓
+
+Application Startup
+
+↓
+
+Configuration Validation
+
+↓
+
+Dependency Creation
+
+↓
+
+MockLLM
+
+↓
+
+LinkedInService
+
+↓
+
+Prompt Construction
+
+↓
+
+MockLLM.generate_text()
+
+↓
+
+Simulated Response
+
+↓
+
+Application Shutdown
+```
 
 ---
 
-# Current Learning Progress
+# Current Architecture
 
-## Completed Concepts
+## Configuration Layer
 
-### Python Project Architecture
+Responsible for:
 
-* Repository vs Application
-* Repository vs Package vs Module
-* Python Packages
-* Purpose of `__init__.py`
-* Module organization
-* Package hierarchy
-* Import hierarchy
+* Runtime configuration
+* Environment variables
+* Configuration validation
+* Fail Fast startup
 
-### Software Engineering Principles
+---
 
-* Separation of Concerns
-* Single Responsibility Principle (SRP)
-* Single Source of Truth (SSOT)
-* Layered Architecture
-* Incremental development
-* Documentation-first development
-* Clean project organization
-* Configuration Management
-* Fail Fast Principle
-* DRY (Don't Repeat Yourself)
-* Runtime Configuration
-* Environment Variables
-* Generic Validation
-* Application Startup Lifecycle
+## Application Layer
 
+Responsible for:
 
-### AI Engineering Architecture
+* Startup orchestration
+* Dependency creation
+* Application lifecycle
 
-* Business responsibilities
-* Infrastructure responsibilities
-* Why LLM communication should be isolated
-* Why configuration should be centralized
-* Why prompts should be treated as application assets
-* Difference between prompt templates and prompt management code
+---
+
+## Service Layer
+
+Responsible for:
+
+* Business logic
+* Prompt preparation
+* Communication with the LLM abstraction
+
+---
+
+## LLM Layer
+
+Responsible for:
+
+* Provider abstraction
+* Mock implementation
+* Future provider integrations
 
 ---
 
 # Engineering Decisions
 
-## Decision 001
+The following architectural decisions have been intentionally made.
 
-Learn AI Engineering fundamentals before introducing frameworks.
+### Decision 001
 
-## Decision 002
-
-Use incremental development with continuous documentation.
-
-## Decision 003
-
-Use Git from the beginning of the project.
-
-## Decision 004
-
-Design application architecture before implementing AI functionality.
-
-## Decision 005
-
-Separate business logic from infrastructure.
-
-## Decision 006
-
-Centralize runtime configuration using a dedicated configuration module.
-
-## Decision 007
-
-Build a functional MVP before introducing production-grade engineering enhancements.
-
-Advanced engineering topics such as Pydantic Settings, structured logging, testing, dependency injection and observability will be introduced after the LinkedIn Tech Agent MVP is operational.
+Design the application architecture before integrating AI providers.
 
 ---
 
-## Decision 008
+### Decision 002
 
-Configuration validation should be generic rather than implemented through repetitive conditional statements.
-
----
-
-## Decision 009
-
-Mandatory configuration should follow the Fail Fast principle by validating application settings before startup.
+Use documentation-first development.
 
 ---
 
-## Decision 010
+### Decision 003
 
-Application startup orchestration belongs to `main.py`, while `settings.py` is responsible only for configuration loading and validation.
-
----
-
-## Decision 011
-
-Introduce abstractions only when they solve a real engineering problem.
-
-Avoid premature optimization and unnecessary complexity during the MVP phase.
+Keep runtime configuration centralized.
 
 ---
 
-# Current Architecture Responsibilities
+### Decision 004
 
-## Business Responsibilities
+Apply Fail Fast validation.
 
-* Research technology topics
-* Retrieve supporting information
-* Generate LinkedIn posts
+---
 
-## Infrastructure Responsibilities
+### Decision 005
 
+Keep application lifecycle separate from business logic.
+
+---
+
+### Decision 006
+
+Program against interfaces (`BaseLLM`) instead of concrete implementations.
+
+---
+
+### Decision 007
+
+Use constructor-based Dependency Injection.
+
+---
+
+### Decision 008
+
+Prefer Composition over Inheritance.
+
+---
+
+### Decision 009
+
+Delay introducing an LLM Factory until multiple providers exist (YAGNI).
+
+---
+
+### Decision 010
+
+Use MockLLM during architecture development to avoid API costs while learning AI Engineering fundamentals.
+
+---
+
+# Current Learning Progress
+
+Completed topics:
+
+* Python Project Architecture
+* Repository vs Package vs Module
+* Layered Architecture
+* Separation of Concerns
+* Single Responsibility Principle
+* Single Source of Truth
 * Configuration Management
-* Environment Variable Management
-* Validation
-* Logging
-* LLM Communication
-* Prompt Management
-* Utilities
-* Data Models
-* Application Startup
+* Environment Variables
+* Fail Fast Principle
+* Application Lifecycle
+* Dependency Injection
+* Abstract Base Classes (ABC)
+* Composition vs Inheritance
+* Program to Interfaces
+* Constructor Injection
+* MockLLM Design
+* End-to-End Application Flow
+* Systematic Debugging
 
+---
+
+# Current Limitations
+
+The application currently uses a simulated LLM.
+
+It does **not** yet:
+
+* Call a real Large Language Model.
+* Support prompt templates.
+* Support multiple LLM providers.
+* Generate embeddings.
+* Support Retrieval-Augmented Generation (RAG).
+* Persist conversation memory.
+
+These capabilities will be introduced incrementally.
+
+---
+
+# Revised Development Roadmap
+
+## Phase 1 – Foundation ✅
+
+Completed.
+
+* Project Architecture
+* Configuration
+* Application Lifecycle
+* Dependency Injection
+* BaseLLM
+* MockLLM
+* LinkedInService
+
+---
+
+## Phase 2 – Prompt Engineering (Next)
+
+Planned:
+
+* Prompt architecture
+* Prompt templates
+* Prompt organization
+* Prompt versioning strategy
+
+---
+
+## Phase 3 – Local LLM Integration
+
+Planned:
+
+* Ollama
+* Local model execution
+* Multiple providers
+* LLM Factory
+
+---
+
+## Phase 4 – Production AI Engineering
+
+Planned:
+
+* OpenAI integration
+* Embeddings
+* Vector Database
+* RAG
+* AI Memory
+* AI Agents
+* Evaluation
+* Monitoring
+* Deployment
 
 ---
 
 # Next Milestone
 
-## Configuration Management
+## Prompt Engineering Architecture
 
 Topics to cover:
 
-* Why configuration management exists
-* Environment Variables
-* API Key Management
-* Secrets Management
-* Runtime Configuration
-* `settings.py`
-* Configuration validation
-* Configuration loading
-* Production configuration practices
+* What is Prompt Engineering?
+* Why prompts deserve their own module.
+* Prompt templates.
+* Prompt organization.
+* Prompt reusability.
+* Separation of prompts from business logic.
+* Designing prompts for maintainability.
 
 ---
 
-# Pending Tasks
+# Session Summary
 
-## Phase 1 – LinkedIn Tech Agent MVP
+The project has successfully completed its software engineering foundation.
 
-* Complete application startup flow in `main.py`.
-* Integrate configuration validation into application startup.
-* Display application startup information.
-* Integrate the OpenAI SDK.
-* Build the OpenAI service wrapper.
-* Implement the first LLM interaction.
-* Generate the first LinkedIn post.
-* Continue incremental feature development until the MVP is complete.
+The application now has a complete startup lifecycle, centralized configuration management, dependency injection, a provider-independent LLM architecture, and a working end-to-end execution flow using MockLLM.
+
+The project is intentionally delaying real LLM integration until the prompt architecture is designed. This ensures that AI-specific functionality is built on top of a maintainable software engineering foundation rather than being tightly coupled to a specific provider.
 
 ---
 
-## Phase 2 – Engineering Enhancements
+# Instructions for Future ChatGPT Sessions
 
-The following improvements are intentionally deferred until after the MVP is complete:
+Continue exactly from this project state.
 
-* Pydantic Settings
-* Structured Logging
-* Custom Exception Handling
-* Retry Mechanisms
-* Unit Testing
-* Integration Testing
-* Dependency Injection
-* Configuration Models
-* Prompt Versioning
-* Observability
-* Cost Monitoring
-* Performance Optimization
-* Deployment Readiness
-
-
----
-
-# Session Notes
-
-The project has successfully completed its configuration management foundation.
-
-The application now supports centralized runtime configuration, environment variable management, generic configuration validation and Fail Fast startup validation.
-
-Configuration responsibilities have been isolated within `settings.py`, while application startup responsibilities will be implemented through `main.py`.
-
-The project roadmap has been refined into two phases:
-
-**Phase 1:** Build a fully functional LinkedIn Tech Agent MVP.
-
-**Phase 2:** Introduce production-grade engineering enhancements after the MVP is operational.
-
-This approach ensures that engineering concepts are learned in the context of solving real application problems while avoiding unnecessary complexity during the early stages of development.
-
-
----
-
-# Instructions for ChatGPT
-
-Continue exactly from this point.
-
-Do not repeat completed concepts.
+Do not repeat completed topics.
 
 Continue acting as a Senior AI Engineer mentoring a Junior Engineer.
 
@@ -339,7 +451,8 @@ Always:
 1. Explain why before how.
 2. Teach one concept at a time.
 3. Give one implementation step at a time.
-4. Wait for confirmation before continuing.
-5. Relate concepts back to Data Engineering whenever appropriate.
-6. Challenge architectural thinking with design questions.
-7. Share industry best practices, trade-offs, and interview perspectives where relevant.
+4. Wait for confirmation before proceeding.
+5. Relate AI Engineering concepts to Data Engineering whenever appropriate.
+6. Explain architectural trade-offs.
+7. Follow professional software engineering practices.
+8. Update documentation after each completed milestone.

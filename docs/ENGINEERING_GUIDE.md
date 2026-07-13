@@ -1,10 +1,12 @@
-# ENGINEERING_GUIDE
+# ENGINEERING GUIDE
 
 ## Purpose
 
-This document provides the complete context for continuing this AI Engineering project in any new ChatGPT conversation.
+This document serves as the engineering handbook for the LinkedIn Tech Agent project.
 
-It explains the project vision, mentoring approach, learning style, engineering principles and long-term roadmap.
+It provides the long-term vision, engineering philosophy, mentoring approach, coding standards, architectural principles, and development workflow that should be followed throughout the project.
+
+The objective is not only to build an AI application but to learn how professional AI systems are designed, implemented, tested, maintained, and evolved.
 
 ---
 
@@ -14,7 +16,7 @@ I am a Data Engineer transitioning into AI Engineering.
 
 My goal is not simply to build an AI application.
 
-I want to deeply understand AI Engineering from first principles so that I can independently design, develop, deploy and maintain production-ready AI applications.
+I want to deeply understand AI Engineering from first principles so that I can independently design, develop, deploy, and maintain production-ready AI applications.
 
 Assume I prefer understanding over speed.
 
@@ -26,250 +28,455 @@ Always explain the reasoning behind decisions before implementation.
 
 Act as a Senior AI Engineer mentoring a Junior Engineer.
 
-Teach using first principles.
+The mentoring approach should follow these principles:
 
-Explain why before how.
+* Explain **why** before **how**.
+* Build concepts incrementally.
+* Teach one concept at a time.
+* Teach one implementation step at a time.
+* Wait for confirmation before proceeding.
+* Encourage reasoning rather than memorization.
+* Challenge design decisions with questions.
+* Relate concepts to Data Engineering whenever appropriate.
+* Continuously explain industry best practices and engineering trade-offs.
 
-Build concepts incrementally.
-
-Do not skip foundational topics.
-
-Challenge my thinking by asking questions.
-
-Prefer one concept and one implementation step at a time.
-
-Wait for my confirmation before moving to the next step.
-
-Whenever possible, relate concepts to Data Engineering because that is my professional background.
+The objective is to build engineering thinking rather than simply completing the project.
 
 ---
 
 # Project
 
-Project Name
+## Project Name
 
 LinkedIn Tech Agent
 
-Purpose
+## Project Goal
 
-Build an AI-powered application capable of generating high-quality technology-focused LinkedIn posts while learning professional AI Engineering practices.
+Build a production-quality AI application capable of generating high-quality technology-focused LinkedIn posts while learning professional AI Engineering practices.
 
-Long-term capabilities include:
+The application is the learning vehicle.
+
+The real objective is becoming capable of independently designing and building production-ready AI systems.
+
+---
+
+# Long-Term Vision
+
+The application will gradually evolve into an intelligent AI assistant capable of:
 
 * Technology topic selection
 * Technology research
 * LinkedIn post generation
-* Duplicate topic detection
-* Content quality improvements
+* Prompt management
 * Personal writing style adaptation
-* Weekly automation
+* Duplicate topic detection
+* Retrieval-Augmented Generation (RAG)
+* AI memory
+* Multi-provider LLM support
+* AI agent workflows
 * Human approval workflow
+* Automated scheduled publishing
 
 ---
 
-# Engineering Principles
+# Engineering Philosophy
 
-Throughout this project we follow professional engineering practices.
+Every engineering decision should be guided by the following principles.
 
-These include:
+## Explain Why Before How
 
-* Git
-* GitHub
-* Clean architecture
-* Incremental development
-* Documentation-first mindset
-* Small meaningful commits
-* Continuous learning
-* Version control
-* Refactoring
-* Code reviews
-* Professional project structure
+Understanding is more important than implementation.
+
+Every new concept should begin with:
+
+* Why it exists
+* What problem it solves
+* Alternative approaches
+* Trade-offs
+* Why it is appropriate for this project
+
+Only then should implementation begin.
 
 ---
 
-# Core Engineering Philosophy
+## Build Strong Foundations First
 
-The project emphasizes understanding software engineering decisions before introducing implementation details.
+Do not introduce advanced AI concepts before understanding the software engineering fundamentals.
 
-The following principles guide every design decision:
+Before integrating real LLMs, first understand:
 
-* Explain **why** before **how**.
-* Prefer simple, maintainable solutions over unnecessary abstractions.
-* Build a working solution before optimizing it.
-* Introduce abstractions only when they solve a real engineering problem.
-* Follow the DRY (Don't Repeat Yourself) principle where appropriate.
-* Apply the Single Responsibility Principle (SRP) throughout the application.
-* Keep configuration centralized using the Single Source of Truth (SSOT) principle.
-* Separate business responsibilities from infrastructure responsibilities.
-* Fail Fast when critical application configuration is missing.
-* Design reusable and generic solutions rather than repetitive implementations.
-* Keep application startup orchestration separate from business logic.
-* Continuously relate AI Engineering concepts back to Data Engineering whenever appropriate.
+* Project architecture
+* Configuration management
+* Dependency Injection
+* Abstract Base Classes
+* Service layer
+* Application lifecycle
+* Prompt architecture
 
+---
+
+## Incremental Development
+
+The project grows one small milestone at a time.
+
+Each milestone should:
+
+* solve one problem
+* be fully understood
+* be documented
+* be committed to Git
+
+---
+
+## Avoid Premature Optimization
+
+Do not introduce abstraction simply because it is possible.
+
+Introduce new components only when they solve a real engineering problem.
+
+Examples:
+
+* Introduce an LLM Factory only after multiple providers exist.
+* Introduce LangChain only after understanding prompt orchestration.
+* Introduce LangGraph only after understanding workflow orchestration.
+
+Follow the **YAGNI (You Aren't Gonna Need It)** principle.
+
+---
+
+# Software Engineering Principles
+
+The following principles guide every design decision.
+
+* Single Responsibility Principle (SRP)
+* Separation of Concerns (SoC)
+* DRY (Don't Repeat Yourself)
+* KISS (Keep It Simple, Stupid)
+* YAGNI (You Aren't Gonna Need It)
+* Fail Fast
+* Single Source of Truth (SSOT)
+* Clean Architecture
+* Loose Coupling
+* High Cohesion
+* Constructor-based Dependency Injection
+* Program to Interfaces, not Implementations
+* Prefer Composition over Inheritance
+
+---
+
+# Object-Oriented Design Principles
+
+The project intentionally uses Object-Oriented Programming to build maintainable AI applications.
+
+## Abstract Base Classes (ABC)
+
+Use Abstract Base Classes to define contracts.
+
+Every LLM provider must implement the complete BaseLLM contract.
+
+This guarantees consistency across providers.
+
+Examples:
+
+* MockLLM
+* OllamaLLM
+* OpenAILLM
+* GeminiLLM
+
+---
+
+## Composition over Inheritance
+
+Use inheritance only when an **IS-A** relationship exists.
+
+Example:
+
+OpenAILLM **is a** BaseLLM.
+
+Use composition when a **HAS-A** relationship exists.
+
+Example:
+
+LinkedInService **has an** LLM.
+
+---
+
+## Dependency Injection
+
+Dependencies should never be created inside business services.
+
+Dependencies must be injected through constructors.
+
+This provides:
+
+* Loose coupling
+* Easy testing
+* Provider flexibility
+* Better maintainability
+
+---
+
+# AI Engineering Philosophy
+
+The project follows a provider-independent architecture.
+
+Business logic should never depend directly on a specific LLM provider.
+
+Instead:
+
+Business Service
+
+↓
+
+BaseLLM Contract
+
+↓
+
+Concrete Provider
+
+Examples of providers:
+
+* MockLLM
+* OllamaLLM
+* OpenAILLM
+* GeminiLLM
+
+Changing providers should require minimal code changes.
+
+---
+
+# Application Architecture
+
+The application follows a layered architecture.
+
+Application Lifecycle
+
+↓
+
+Configuration
+
+↓
+
+Dependency Creation
+
+↓
+
+Business Services
+
+↓
+
+LLM Provider
+
+↓
+
+Response
+
+Responsibilities are clearly separated.
+
+---
+
+# Application Lifecycle
+
+The application startup sequence should follow:
+
+1. Startup
+2. Validate Configuration
+3. Create Dependencies
+4. Run Application
+5. Shutdown
+
+The `main.py` module acts as the **Composition Root**.
+
+Business logic should never exist inside `main.py`.
+
+---
+
+# Current Development Strategy
+
+The project is intentionally divided into multiple phases.
+
+## Phase 1 – Application Foundation ✅
+
+Topics:
+
+* Project architecture
+* Python package structure
+* Configuration management
+* Environment variables
+* Application lifecycle
+* Dependency Injection
+* Abstract Base Classes
+* MockLLM
+* Service layer
+* End-to-end application flow
+
+---
+
+## Phase 2 – AI Foundations (Current)
+
+Topics:
+
+* Prompt Engineering
+* Prompt architecture
+* Prompt templates
+* Better prompt organization
+* Structured prompts
+
+---
+
+## Phase 3 – Local LLM Integration
+
+Topics:
+
+* Ollama
+* Local models
+* LLM Factory
+* Provider selection
+* Model configuration
+
+---
+
+## Phase 4 – Production AI Engineering
+
+Topics:
+
+* OpenAI
+* Embeddings
+* Vector Databases
+* RAG
+* AI Memory
+* Agents
+* Evaluation
+* Monitoring
+* Deployment
+
+---
 
 # Framework Philosophy
 
-Do not introduce AI frameworks immediately.
+Frameworks should never be introduced simply because they are popular.
 
-Before using frameworks like LangChain or LangGraph, explain the engineering problems they solve.
+For every framework:
 
-Build the core functionality ourselves first.
+1. Understand the engineering problem.
+2. Build it manually.
+3. Understand the limitations.
+4. Introduce the framework.
+5. Compare both approaches.
 
-Only introduce frameworks after the fundamentals are understood.
+Examples include:
+
+* LangChain
+* LangGraph
+* LlamaIndex
 
 ---
 
-# Framework Adoption Strategy
+# Coding Standards
 
-Frameworks should never be introduced simply because they are popular.
+Follow PEP 8.
 
-For every framework introduced during this mentorship, the following learning sequence will be followed:
+General guidelines:
 
-1. Understand the engineering problem.
-2. Build a simple implementation ourselves.
-3. Identify the limitations of the custom implementation.
-4. Introduce the framework.
-5. Explain how the framework solves those limitations.
-6. Compare the custom implementation with the framework.
+* Small focused methods
+* Descriptive naming
+* Constructor injection
+* Type hints
+* Clear docstrings
+* Single responsibility
+* Readable code over clever code
 
-This approach ensures a deep understanding of both the underlying engineering concepts and the value provided by production frameworks.
+Every public method should clearly express its responsibility.
 
+---
+
+# Debugging Philosophy
+
+Always debug systematically.
+
+Never guess.
+
+Recommended approach:
+
+1. Read the complete error.
+2. Start from the last line.
+3. Identify the failing component.
+4. Verify assumptions.
+5. Isolate the problem.
+6. Fix the root cause.
+7. Re-test.
+
+Avoid random code changes.
+
+---
 
 # Documentation Strategy
 
-Maintain the following documents throughout the project:
+Documentation is part of the deliverable.
 
-README.md
+The following documents should always remain current.
 
-Project overview.
+* README.md
+* ENGINEERING_GUIDE.md
+* PROJECT_STATE.md
+* LEARNING.md
 
-LEARNING.md
-
-Personal AI Engineering learning journal.
-
-ROADMAP.md
-
-Project roadmap and milestones.
-
-PROJECT_CONTEXT.md
-
-Long-term project context.
-
-PROJECT_STATE.md
-
-Current project status.
-
-Future documentation:
+Future additions:
 
 * DECISIONS.md
 * CHANGELOG.md
-* Architecture diagrams
+* ARCHITECTURE.md
+
+Every completed milestone should update the documentation before being committed.
 
 ---
 
-# Development Strategy
+# Git Workflow
 
-The project will be developed in two distinct phases.
+Every milestone should follow this workflow.
 
-## Phase 1 – Build a Functional MVP
+1. Learn the concept.
+2. Design the solution.
+3. Implement.
+4. Test.
+5. Refactor.
+6. Update documentation.
+7. Commit meaningful changes.
 
-The primary objective is to build a fully functional LinkedIn Tech Agent capable of generating high-quality technology-focused LinkedIn posts.
-
-During this phase:
-
-* Focus on understanding core AI Engineering concepts.
-* Build features incrementally.
-* Keep implementations simple and readable.
-* Introduce only the abstractions required for the current stage.
-* Avoid premature optimization and unnecessary complexity.
-
-The goal is to first build a working AI application while learning the engineering principles behind each component.
-
-## Phase 2 – Engineering Enhancements
-
-Once the MVP is complete, the application will be progressively enhanced using production-grade engineering practices.
-
-Topics planned for this phase include:
-
-* Pydantic Settings
-* Structured Logging
-* Custom Exception Handling
-* Retry Mechanisms
-* Unit Testing
-* Integration Testing
-* Dependency Injection
-* Configuration Models
-* Observability
-* Performance Optimization
-* Deployment Readiness
-* Production Best Practices
-
-This phased approach ensures that engineering concepts are learned in the context of real application development rather than introducing advanced frameworks prematurely.
-
-
-
-
-# Learning Roadmap
-
-The long-term learning journey includes:
-
-* Python project architecture
-* APIs
-* AI fundamentals
-* Machine Learning fundamentals
-* Large Language Models
-* Prompt Engineering
-* OpenAI APIs
-* AI application development
-* AI Agents
-* Memory
-* Vector Databases
-* RAG
-* LangGraph
-* MCP (Model Context Protocol)
-* Multi-Agent Systems
-* Deployment
-* Evaluation
-* Monitoring
-* Security
-* Cost Optimization
-* Production AI Engineering
+Small meaningful commits are preferred over large commits.
 
 ---
 
 # Session Workflow
 
-Every mentoring session follows a structured engineering workflow.
+Every mentoring session follows this structure.
 
 1. Explain the concept.
-2. Explain why the concept exists.
-3. Relate the concept to real-world software engineering.
-4. Compare possible implementation approaches and discuss trade-offs.
-5. Select the most appropriate design for the current project stage.
-6. Implement one small step at a time.
-7. Verify understanding before proceeding.
-8. Update project documentation.
-9. Commit meaningful changes to version control.
-10. Identify the next milestone.
-
-The focus of every session is long-term engineering understanding rather than completing features as quickly as possible.
+2. Explain why it exists.
+3. Compare approaches.
+4. Select the appropriate design.
+5. Implement one step.
+6. Review the implementation.
+7. Discuss improvements.
+8. Update documentation.
+9. Commit changes.
+10. Define the next milestone.
 
 ---
 
 # Success Criteria
 
-# Success Criteria
-
-The primary objective of this mentorship is not simply to complete the LinkedIn Tech Agent.
+Success is not measured by completing the LinkedIn Tech Agent.
 
 Success is achieved when I can independently:
 
 * Design scalable AI applications.
 * Build production-ready AI systems.
-* Make sound software architecture decisions.
-* Understand the reasoning behind engineering trade-offs.
-* Apply professional software engineering principles.
-* Integrate AI capabilities into well-structured applications.
-* Confidently evaluate when to build custom solutions and when to adopt frameworks.
+* Apply sound software architecture principles.
+* Understand engineering trade-offs.
+* Build provider-independent AI applications.
+* Design maintainable prompt architectures.
+* Integrate AI capabilities into well-structured systems.
+* Confidently decide when to build custom solutions and when to adopt frameworks.
 
-The completed LinkedIn Tech Agent serves as the practical vehicle for achieving these long-term AI Engineering skills rather than being the end goal itself.
+The LinkedIn Tech Agent is the practical project through which these long-term AI Engineering skills are developed.
