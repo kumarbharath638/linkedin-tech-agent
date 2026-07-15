@@ -8,6 +8,7 @@ from app.config import settings
 from app.llm.mock_llm import MockLLM
 from app.llm.base_llm import BaseLLM
 from app.services.linkedin_service import LinkedInService
+from app.prompts.linkedin_prompt import generate_post_prompt
 
 
 def start_up():

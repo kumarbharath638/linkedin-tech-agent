@@ -1,4 +1,5 @@
 from app.llm.base_llm import BaseLLM
+from app.prompts.linkedin_prompt import generate_post_prompt
 
 
 class LinkedInService:
@@ -14,18 +15,27 @@ class LinkedInService:
             llm: An implementation of the BaseLLM contract.
         """
         self.llm = llm
+        self.generate_post_prompt=generate_post_prompt
 
     def generate_post(self, topic: str) -> str:
         """
         Generate a LinkedIn post for the given topic.
         """
-        prompt = self._build_prompt(topic)
+        prompt = generate_post_prompt(topic)
+
+        #print(prompt)
 
         response = self.llm.generate_text(prompt)
 
         return response
 
-    def _build_prompt(self, topic: str) -> str:
+    '''def generate_post(self, topic: str) -> str:
+        prompt = generate_post_prompt(topic)
+
+        return self._llm.generate_text(prompt) '''
+    
+    
+    '''def _build_prompt(self, topic: str) -> str:
         """
         Build the prompt to send to the LLM.
 
@@ -35,4 +45,4 @@ class LinkedInService:
         return (
             f"Write a professional LinkedIn post about "
             f"{topic}."
-        )
+        )'''
