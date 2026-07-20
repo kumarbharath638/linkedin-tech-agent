@@ -1560,3 +1560,351 @@ The LinkedIn Tech Agent is the vehicle through which these skills are being deve
 By understanding the reasoning behind each engineering decision, I am building the ability to independently design, develop, debug, and maintain production-ready AI systems rather than simply integrating AI APIs.
 
 This learning journal will continue evolving as new milestones are completed and will serve as a long-term reference throughout my AI Engineering journey.
+
+# Session X – AI Engineering Foundations (LLM Internals)
+
+## Objective
+
+Develop a strong conceptual understanding of how Large Language Models (LLMs) work before integrating a real LLM into the LinkedIn Tech Agent.
+
+The goal of this session was to understand the complete lifecycle of an LLM from training to inference and how Retrieval Augmented Generation (RAG) fits into production AI systems.
+
+---
+
+## Topics Covered
+
+### 1. LLM Training vs Inference
+
+Learned the difference between:
+
+- Training (performed once by model providers)
+- Inference (performed every time an application calls the model)
+
+Training teaches the model by continuously predicting the next token, calculating prediction error (loss), and updating billions of model weights using optimization algorithms.
+
+Inference uses the already trained model to generate responses one token at a time without updating any weights.
+
+---
+
+### 2. Tokenization
+
+Understood that LLMs do not understand words directly.
+
+Input text is divided into tokens.
+
+Tokens are converted into token IDs before entering the model.
+
+The model works entirely on token IDs rather than raw text.
+
+---
+
+### 3. Embeddings
+
+Embeddings convert token IDs into dense numerical vectors.
+
+Important learning:
+
+- Similar concepts have embeddings that are close together in vector space.
+- Embeddings capture semantic meaning rather than exact word matching.
+- Embeddings alone cannot determine contextual meaning.
+
+Example:
+
+The word "Bank" can represent either:
+
+- Financial institution
+- River bank
+
+The embedding alone is insufficient to determine which meaning is intended.
+
+---
+
+### 4. Transformer Architecture
+
+The Transformer is the core reasoning engine of modern LLMs.
+
+Its responsibility is not to store documents or search databases.
+
+Instead, it understands relationships between tokens using context.
+
+The Transformer processes all input tokens together to build contextual understanding before predicting the next token.
+
+---
+
+### 5. Self-Attention
+
+Self-Attention allows every token to determine which other tokens are important for understanding its meaning.
+
+Example:
+
+"The bank approved my loan."
+
+The token "bank" pays attention to "loan" and "approved" to infer that it refers to a financial institution.
+
+Attention enables contextual understanding instead of treating every token independently.
+
+---
+
+### 6. Model Training
+
+Training follows an iterative feedback loop:
+
+Training Data
+→ Tokenization
+→ Embeddings
+→ Transformer
+→ Next Token Prediction
+→ Loss Calculation
+→ Weight Updates
+→ Repeat
+
+Important learning:
+
+The model is never explicitly taught facts.
+
+Instead, it gradually adjusts billions of weights by minimizing prediction error across massive datasets.
+
+Knowledge emerges from learned statistical patterns rather than explicit storage of documents.
+
+---
+
+### 7. Model Weights
+
+Weights represent the learned mathematical parameters of the model.
+
+They are not human-readable facts.
+
+The collective values of billions of weights encode the knowledge acquired during training.
+
+---
+
+### 8. Inference
+
+Inference is the process of generating responses using an already trained model.
+
+The response is generated one token at a time.
+
+Generation loop:
+
+Prompt
+→ Predict Next Token
+→ Append Token
+→ Repeat
+→ End of Sequence (EOS)
+
+The model never generates an entire paragraph in one operation.
+
+Every newly generated token becomes part of the context for generating the following token.
+
+This process is called Auto-Regressive Generation.
+
+---
+
+### 9. RAG (Retrieval Augmented Generation)
+
+RAG extends the prompt with relevant external knowledge before sending it to the LLM.
+
+Flow:
+
+User Question
+→ Embedding Model
+→ Vector Database
+→ Retrieve Relevant Chunks
+→ Prompt Builder
+→ LLM
+
+Important learning:
+
+RAG does not modify the LLM.
+
+It only enriches the prompt.
+
+The inference process inside the LLM remains unchanged.
+
+---
+
+### 10. Vector Databases
+
+Understood why vector databases exist.
+
+Traditional SQL databases search structured values.
+
+Vector databases search semantic similarity using embeddings.
+
+Major Vector Databases discussed:
+
+- Pinecone
+- Weaviate
+- Milvus
+- Qdrant
+- Chroma
+- FAISS
+
+---
+
+### 11. Semantic Search
+
+Semantic search compares embedding similarity rather than exact keywords.
+
+This enables retrieval of conceptually similar documents even when different wording is used.
+
+Semantic search is one of the core building blocks of RAG.
+
+---
+
+### 12. Chunking
+
+Large documents are divided into smaller chunks before embeddings are generated.
+
+Reasons:
+
+- Fit within context window limits.
+- Improve retrieval accuracy.
+- Reduce token usage.
+- Reduce cost.
+
+Chunking significantly impacts RAG quality.
+
+---
+
+### 13. Prompt Engineering
+
+Prompt Engineering is the process of designing prompts that guide the LLM toward the desired behavior.
+
+Since every generated token depends on the current prompt, prompt quality directly impacts response quality.
+
+Prompt Engineering becomes increasingly important in production AI systems.
+
+---
+
+### 14. Temperature
+
+Temperature controls randomness during next-token selection.
+
+Low Temperature:
+
+- More deterministic
+- Better for SQL generation
+- Better for code generation
+- Better for summarization
+
+High Temperature:
+
+- More creative
+- Better for brainstorming
+- Better for storytelling
+- More diverse responses
+
+Important learning:
+
+Temperature does not make the model more intelligent.
+
+It only changes how willing the model is to choose lower probability tokens.
+
+---
+
+### 15. AI Application Design
+
+Production AI applications should not hardcode model parameters.
+
+Parameters such as:
+
+- Model
+- Temperature
+- Max Tokens
+
+should be configurable through application configuration or environment variables.
+
+Different application features may require different parameter values.
+
+---
+
+### 16. Why LLM Responses Are Fast
+
+Although responses are generated one token at a time:
+
+- GPUs perform massive parallel mathematical computations.
+- Transformers process all current input tokens together.
+- KV Cache prevents recomputation of previous attention states.
+
+These optimizations make token generation appear almost instantaneous.
+
+---
+
+### 17. KV Cache
+
+KV Cache stores intermediate attention computations from previous generation steps.
+
+Instead of recomputing the entire context after every generated token, the model reuses cached computations.
+
+This significantly reduces inference latency.
+
+Comparable concept:
+
+Spark DataFrame caching avoids recomputing previous transformations.
+
+---
+
+### 18. Token-Based Pricing
+
+LLM providers charge based on token usage because tokens directly correspond to GPU computation.
+
+Pricing depends on:
+
+- Input Tokens
+- Output Tokens
+- Model Size
+- Context Length
+
+Long prompts, extensive conversation history, large RAG contexts, and long generated responses all increase cost.
+
+---
+
+### 19. Production AI Engineering Principles
+
+Three primary optimization goals:
+
+- Quality
+- Latency
+- Cost
+
+Every production AI application attempts to balance these competing objectives.
+
+Improving one often impacts the others.
+
+---
+
+## Key Takeaways
+
+The complete mental model of an LLM is:
+
+Training Data
+→ Tokenization
+→ Embeddings
+→ Transformer
+→ Attention
+→ Next Token Prediction
+→ Loss
+→ Optimizer
+→ Weight Updates
+→ Trained Model
+
+Inference:
+
+Prompt
+→ Tokenization
+→ Embeddings
+→ Transformer
+→ Predict One Token
+→ Append Token
+→ Repeat Until EOS
+
+RAG:
+
+Retrieve Relevant Context
+→ Build Prompt
+→ Send Prompt to LLM
+→ Inference
+→ Response
+
+Understanding these concepts provides the foundation required to design, build, optimize, and troubleshoot production-grade AI applications.

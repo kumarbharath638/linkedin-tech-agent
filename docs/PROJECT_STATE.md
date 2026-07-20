@@ -95,7 +95,7 @@ Application lifecycle:
 
 ---
 
-## ✅ Milestone 5 – LLM Architecture Foundation (Completed)
+## ✅ Milestone 5 – LLM & Prompt Architecture Foundation (Completed)
 
 Completed:
 
@@ -106,6 +106,10 @@ Completed:
 * Applied Composition over Inheritance.
 * Applied Program to Interfaces.
 * Designed the project for future provider replacement.
+* Introduced a dedicated Prompt Layer.
+* Created prompt classes to separate prompt construction from business logic.
+* Implemented class-based prompt organization for maintainability and future scalability.
+* Refactored LinkedInService to consume prompts from the Prompt Layer instead of constructing prompts internally.
 
 Current provider:
 
@@ -140,6 +144,7 @@ linkedin-tech-agent/
 │   │
 │   ├── prompts/
 │   │   └── __init__.py
+│   |   └── linkedin_prompt.py
 │   │
 │   ├── models/
 │   │   └── __init__.py
@@ -163,7 +168,6 @@ linkedin-tech-agent/
 
 # Current Application Flow
 
-```text
 User
 
 ↓
@@ -184,7 +188,7 @@ Dependency Creation
 
 ↓
 
-MockLLM
+LinkedInPrompt
 
 ↓
 
@@ -192,21 +196,15 @@ LinkedInService
 
 ↓
 
-Prompt Construction
-
-↓
-
 MockLLM.generate_text()
 
 ↓
 
-Simulated Response
+Simulated LinkedIn Post
 
 ↓
 
 Application Shutdown
-```
-
 ---
 
 # Current Architecture
@@ -250,6 +248,14 @@ Responsible for:
 * Mock implementation
 * Future provider integrations
 
+## Prompt Layer
+
+Responsible for:
+
+* Prompt construction
+* Prompt organization
+* Prompt reusability
+* Separating prompt logic from business logic
 ---
 
 # Engineering Decisions
@@ -314,6 +320,23 @@ Delay introducing an LLM Factory until multiple providers exist (YAGNI).
 
 Use MockLLM during architecture development to avoid API costs while learning AI Engineering fundamentals.
 
+### Decision 011
+
+Separate prompt construction from business logic using dedicated prompt classes.
+
+---
+
+### Decision 012
+
+Use class-based prompt organization to support future prompt expansion and maintainability.
+
+---
+
+### Decision 013
+
+Pass additional runtime context dynamically to prompt classes instead of hardcoding context within prompts.
+
+
 ---
 
 # Current Learning Progress
@@ -338,6 +361,27 @@ Completed topics:
 * MockLLM Design
 * End-to-End Application Flow
 * Systematic Debugging
+* Prompt Layer Architecture
+* Prompt Separation
+* Prompt Reusability
+* Class-based Prompt Design
+* LLM Training vs Inference
+* Tokenization
+* Embeddings
+* Transformer Architecture
+* Self-Attention
+* Model Weights
+* Next Token Prediction
+* Auto-Regressive Generation
+* Temperature
+* Prompt Engineering Fundamentals
+* Retrieval Augmented Generation (RAG)
+* Vector Databases
+* Semantic Search
+* Chunking
+* KV Cache
+* Token-Based Pricing
+* AI Engineering Cost, Latency and Quality Trade-offs
 
 ---
 
@@ -348,11 +392,14 @@ The application currently uses a simulated LLM.
 It does **not** yet:
 
 * Call a real Large Language Model.
-* Support prompt templates.
-* Support multiple LLM providers.
+* Integrate OpenAI or other providers.
 * Generate embeddings.
-* Support Retrieval-Augmented Generation (RAG).
-* Persist conversation memory.
+* Store vectors in a Vector Database.
+* Implement Retrieval-Augmented Generation (RAG).
+* Support conversation memory.
+* Support prompt versioning.
+* Support prompt evaluation.
+* Support AI observability or monitoring.
 
 These capabilities will be introduced incrementally.
 
@@ -362,69 +409,92 @@ These capabilities will be introduced incrementally.
 
 ## Phase 1 – Foundation ✅
 
-Completed.
+Completed
 
 * Project Architecture
-* Configuration
+* Configuration Management
 * Application Lifecycle
 * Dependency Injection
 * BaseLLM
 * MockLLM
-* LinkedInService
+* Prompt Layer
+* LinkedIn Prompt
+* LinkedIn Service
 
 ---
 
-## Phase 2 – Prompt Engineering (Next)
+## Phase 2 – AI Engineering Foundations ✅
 
-Planned:
+Completed
 
-* Prompt architecture
-* Prompt templates
-* Prompt organization
-* Prompt versioning strategy
+* LLM Training
+* LLM Inference
+* Tokenization
+* Embeddings
+* Transformer
+* Self-Attention
+* Prompt Engineering Fundamentals
+* Temperature
+* RAG Concepts
+* Vector Databases
+* Semantic Search
+* Chunking
+* KV Cache
+* Token Pricing
+* AI Cost vs Latency vs Quality
 
 ---
 
-## Phase 3 – Local LLM Integration
+## Phase 3 – Real LLM Integration (Next)
 
-Planned:
+Planned
 
-* Ollama
-* Local model execution
-* Multiple providers
-* LLM Factory
+* OpenAI Integration
+* OpenAILLM implementation
+* API Authentication
+* Dynamic Model Configuration
+* Dynamic Temperature Configuration
+* Replace MockLLM through Dependency Injection
 
 ---
 
-## Phase 4 – Production AI Engineering
+## Phase 4 – Retrieval Augmented Generation
 
-Planned:
+Planned
 
-* OpenAI integration
 * Embeddings
 * Vector Database
-* RAG
+* Document Chunking
+* Semantic Search
+* RAG Pipeline
+
+---
+
+## Phase 5 – Production AI Engineering
+
+Planned
+
+* Multiple Providers
+* LLM Factory
 * AI Memory
 * AI Agents
 * Evaluation
 * Monitoring
 * Deployment
-
 ---
 
 # Next Milestone
 
-## Prompt Engineering Architecture
+## Real LLM Integration
 
-Topics to cover:
+Topics to implement:
 
-* What is Prompt Engineering?
-* Why prompts deserve their own module.
-* Prompt templates.
-* Prompt organization.
-* Prompt reusability.
-* Separation of prompts from business logic.
-* Designing prompts for maintainability.
+* OpenAILLM
+* OpenAI API Integration
+* Dynamic Model Configuration
+* Dynamic Temperature Configuration
+* Replace MockLLM using Dependency Injection
+* Validate end-to-end generation using a real LLM
 
 ---
 
